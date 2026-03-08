@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Women's Day ;3</title>
+
+<style>
+body{
+    margin:0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg,#ff9ecb,#ffd6ec);
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+}
+
+.container{
+    background:white;
+    padding:40px;
+    border-radius:20px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.2);
+}
+
+h1{
+    color:#ff4fa3;
+}
+
+p{
+    font-size:20px;
+}
+
+#hamster{
+    font-size:80px;
+    cursor:pointer;
+    user-select:none;
+    display:inline-block;
+    transition: transform 0.15s;
+}
+
+.whack{
+    transform: rotate(25deg) scale(1.2);
+}
+
+#counter{
+    margin-top:10px;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>Happy Women's Day ;3</h1>
+
+    <p>
+        To my amazing wife mwahh<br><br>
+        You make every day brighter and happier.<br>
+        I love you more than words can explain.
+    </p>
+
+    <p>Whack the hamster </p>
+
+    <div id="hamster">🐹</div>
+    <div id="counter">Whacks: 0</div>
+</div>
+
+<script>
+
+let count = 0;
+const hamster = document.getElementById("hamster");
+const counter = document.getElementById("counter");
+
+hamster.onclick = function(){
+
+    count++;
+    counter.textContent = "Whacks: " + count;
+
+    hamster.classList.add("whack");
+
+    setTimeout(()=>{
+        hamster.classList.remove("whack");
+    },150);
+
+};
+
+</script>
+
+</body>
+</html>
