@@ -3,89 +3,289 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Happy Women's Day ;3</title>
+<title>For My Wife ❤️</title>
 
 <style>
-body{
-    margin:0;
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg,#ff9ecb,#ffd6ec);
-    height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    text-align:center;
-}
 
-.container{
-    background:white;
-    padding:40px;
-    border-radius:20px;
-    box-shadow:0 10px 25px rgba(0,0,0,0.2);
+body{
+margin:0;
+font-family:Arial;
+background:linear-gradient(135deg,#ff9a9e,#fad0c4);
+text-align:center;
+color:white;
 }
 
 h1{
-    color:#ff4fa3;
+margin-top:20px;
+font-size:40px;
 }
 
-p{
-    font-size:20px;
+.container{
+padding:20px;
 }
 
-#hamster{
-    font-size:80px;
-    cursor:pointer;
-    user-select:none;
-    display:inline-block;
-    transition: transform 0.15s;
+button{
+padding:12px 20px;
+margin:10px;
+border:none;
+border-radius:10px;
+font-size:18px;
+background:#ff4d6d;
+color:white;
+cursor:pointer;
 }
 
-.whack{
-    transform: rotate(25deg) scale(1.2);
+button:hover{
+background:#ff1f4d;
 }
 
-#counter{
-    margin-top:10px;
-    font-weight:bold;
+.game{
+display:none;
+margin-top:20px;
 }
+
+canvas{
+background:white;
+border-radius:10px;
+}
+
+#hamsterGame{
+height:300px;
+position:relative;
+}
+
+.hamster{
+position:absolute;
+font-size:50px;
+cursor:pointer;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(4,80px);
+grid-gap:10px;
+justify-content:center;
+}
+
+.card{
+width:80px;
+height:80px;
+background:#fff;
+color:#fff;
+font-size:40px;
+display:flex;
+align-items:center;
+justify-content:center;
+cursor:pointer;
+border-radius:10px;
+}
+
+.card.revealed{
+color:black;
+}
+
+.message{
+margin-top:30px;
+font-size:22px;
+}
+
 </style>
 </head>
 
 <body>
 
+<h1>❤️ Mini Games For My Wife ❤️</h1>
+
 <div class="container">
-    <h1>Happy Women's Day ;3</h1>
 
-    <p>
-        To my amazing wife mwahh<br><br>
-        You make every day brighter and happier.<br>
-        I love you more than words can explain.
-    </p>
+<button onclick="showGame('game1')">Love Catcher</button>
+<button onclick="showGame('game2')">Whack Hamster</button>
+<button onclick="showGame('game3')">Memory Love</button>
 
-    <p>Whack the hamster </p>
-
-    <div id="hamster">🐹</div>
-    <div id="counter">Whacks: 0</div>
+<div id="game1" class="game">
+<h2>Catch the Hearts 💖</h2>
+<canvas id="catchCanvas" width="400" height="300"></canvas>
+<p>Move with mouse and catch the hearts!</p>
 </div>
+
+<div id="game2" class="game">
+<h2>Whack the Hamster 🐹</h2>
+<div id="hamsterGame"></div>
+<p>Click the hamster when it appears!</p>
+</div>
+
+<div id="game3" class="game">
+<h2>Love Memory 💌</h2>
+<div class="grid" id="memoryGrid"></div>
+</div>
+
+<div class="message">
+I love you more than any game ❤️
+</div>
+
+</div>
+
+<audio autoplay loop>
+<source src="https://cdn.pixabay.com/audio/2022/03/15/audio_8c1d9a2b27.mp3" type="audio/mpeg">
+</audio>
 
 <script>
 
-let count = 0;
-const hamster = document.getElementById("hamster");
-const counter = document.getElementById("counter");
+function showGame(id){
+document.querySelectorAll(".game").forEach(g=>g.style.display="none");
+document.getElementById(id).style.display="block";
+}
 
-hamster.onclick = function(){
 
-    count++;
-    counter.textContent = "Whacks: " + count;
 
-    hamster.classList.add("whack");
 
-    setTimeout(()=>{
-        hamster.classList.remove("whack");
-    },150);
+
+
+// LOVE CATCHER GAME
+
+const canvas=document.getElementById("catchCanvas");
+const ctx=canvas.getContext("2d");
+
+let basketX=150;
+let hearts=[];
+let score=0;
+
+canvas.addEventListener("mousemove",e=>{
+basketX=e.offsetX-30;
+});
+
+function spawnHeart(){
+hearts.push({x:Math.random()*360,y:0});
+}
+
+setInterval(spawnHeart,1000);
+
+function updateGame(){
+
+ctx.clearRect(0,0,400,300);
+
+ctx.fillStyle="pink";
+ctx.fillRect(basketX,260,60,20);
+
+hearts.forEach((h,i)=>{
+
+h.y+=3;
+
+ctx.font="24px Arial";
+ctx.fillText("💖",h.x,h.y);
+
+if(h.y>260 && h.x>basketX && h.x<basketX+60){
+score++;
+hearts.splice(i,1);
+}
+
+if(h.y>300){
+hearts.splice(i,1);
+}
+
+});
+
+ctx.fillStyle="black";
+ctx.fillText("Score: "+score,10,20);
+
+requestAnimationFrame(updateGame);
+}
+
+updateGame();
+
+
+
+
+
+
+// HAMSTER GAME
+
+const hamsterArea=document.getElementById("hamsterGame");
+
+let hamsterScore=0;
+
+function spawnHamster(){
+
+const h=document.createElement("div");
+h.className="hamster";
+h.innerText="🐹";
+
+h.style.left=Math.random()*350+"px";
+h.style.top=Math.random()*250+"px";
+
+h.onclick=function(){
+hamsterScore++;
+h.remove();
+};
+
+hamsterArea.appendChild(h);
+
+setTimeout(()=>{
+h.remove();
+},1200);
+
+}
+
+setInterval(spawnHamster,900);
+
+
+
+
+
+
+// MEMORY GAME
+
+const emojis=["❤️","💖","💘","💝","❤️","💖","💘","💝"];
+let shuffled=emojis.sort(()=>0.5-Math.random());
+
+let first=null;
+let second=null;
+
+const grid=document.getElementById("memoryGrid");
+
+shuffled.forEach(e=>{
+
+const card=document.createElement("div");
+card.className="card";
+card.dataset.value=e;
+
+card.onclick=function(){
+
+if(card.classList.contains("revealed")) return;
+
+card.classList.add("revealed");
+card.innerText=e;
+
+if(!first){
+first=card;
+return;
+}
+
+second=card;
+
+if(first.dataset.value===second.dataset.value){
+
+first=null;
+second=null;
+
+}else{
+
+setTimeout(()=>{
+first.classList.remove("revealed");
+second.classList.remove("revealed");
+first.innerText="";
+second.innerText="";
+first=null;
+second=null;
+},700);
+
+}
 
 };
+
+grid.appendChild(card);
+
+});
 
 </script>
 
